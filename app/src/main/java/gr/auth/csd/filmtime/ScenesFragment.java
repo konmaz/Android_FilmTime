@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import gr.auth.csd.filmtime.databinding.FragmentSecondBinding;
+import gr.auth.csd.filmtime.databinding.FragmentScenesBinding;
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Scene;
 
-public class SecondFragment extends Fragment {
+public class ScenesFragment extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentScenesBinding binding;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter<RecyclerAdapterScene.ViewHolder> adapter;
@@ -28,7 +28,7 @@ public class SecondFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentScenesBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
