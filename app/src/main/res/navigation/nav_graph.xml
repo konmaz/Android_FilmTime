@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="gr.auth.csd.filmtime.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:name="gr.auth.csd.filmtime.HomeFragment"
+        android:label="@string/home_fragment_label"
+        tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/HomeFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
         android:name="gr.auth.csd.filmtime.SecondFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/scenes_fragment_label"
         tools:layout="@layout/fragment_second">
 
         <action

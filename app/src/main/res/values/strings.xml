@@ -2,10 +2,16 @@
     <string name="app_name">FilmTime</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">Film Time</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="home_fragment_label">Film Time</string>
+    <string name="scenes_fragment_label">Scenes</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="add_new_scene">Add new scene</string>
+    <string name="scenes">Scenes</string>
+    <string name="scene">Scene</string>
+    <string name="scene_detail">Scene detail</string>
+    <string name="edit">Edit</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -45,4 +51,5 @@
     </string>
     <string name="introduction">With this app you can manage you Film Schedule, you can import your Actors in the ASSETS page, import your scenes in SCENES, and get an overview in calendar.</string>
     <string name="calendar">Calendar</string>
+    <string name="assets">Assets</string>
 </resources>

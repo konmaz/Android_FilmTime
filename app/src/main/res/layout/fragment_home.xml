@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragment">
+    tools:context=".HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:id="@+id/button_assets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Assets"
+                android:text="@string/assets"
                 android:textSize="20sp"
                 app:icon="@drawable/baseline_people_24" />
 
@@ -53,7 +53,7 @@
                 android:id="@+id/button_scenes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Scenes"
+                android:text="@string/scenes"
                 android:textSize="20sp"
                 app:icon="@drawable/baseline_list_24" />
 
