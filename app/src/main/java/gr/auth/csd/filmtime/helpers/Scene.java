@@ -1,11 +1,15 @@
 package gr.auth.csd.filmtime.helpers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
-public class Scene {
+public class Scene implements Serializable {
+    private long ID;
     private String name;
+
     private ArrayList<CrewMember> crew;
 
     public Scene(String name, ArrayList<CrewMember> crew){
@@ -16,6 +20,16 @@ public class Scene {
     public Scene(){
         this.name = "Scene";
         this.crew = new ArrayList<CrewMember>(Collections.singletonList(new CrewMember()));
+    }
+
+    public Scene(long sceneId, String name, ArrayList<CrewMember> crew ) {
+        this.ID = sceneId;
+        this.name = name;
+        this.crew = crew;
+    }
+
+    public long getID() {
+        return ID;
     }
 
     public void setName(String name){
@@ -48,6 +62,10 @@ public class Scene {
 
     public CrewMember getCrewMember(int position){
         return this.crew.get(position);
+    }
+
+    public int getCrewMembersSize(){
+        return this.crew.size();
     }
 
 }

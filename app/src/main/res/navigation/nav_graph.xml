@@ -24,5 +24,22 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_ScenesFragment_to_editorScene"
+            app:destination="@id/editorScene" />
+    </fragment>
+    <fragment
+        android:id="@+id/editorScene"
+        android:name="gr.auth.csd.filmtime.EditorScene"
+        android:label="{title} Scene"
+        tools:layout="@layout/fragment_editor_scene" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editorScene_to_ScenesFragment"
+            app:destination="@id/ScenesFragment"
+            app:popUpTo="@+id/ScenesFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

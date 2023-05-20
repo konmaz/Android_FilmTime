@@ -52,4 +52,6 @@
     <string name="introduction">With this app you can manage you Film Schedule, you can import your Actors in the ASSETS page, import your scenes in SCENES, and get an overview in calendar.</string>
     <string name="calendar">Calendar</string>
     <string name="assets">Assets</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

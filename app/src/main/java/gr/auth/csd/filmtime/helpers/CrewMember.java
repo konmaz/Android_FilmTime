@@ -1,10 +1,15 @@
 package gr.auth.csd.filmtime.helpers;
 
-public class CrewMember {
+import java.io.Serializable;
+
+public class CrewMember implements Serializable {
+    private long ID; // used for database
     private String name;
+
     private String job;
 
-    public CrewMember(String name, String job){
+    public CrewMember(long ID,String name, String job){
+        this.ID = ID;
         this.name = name;
         this.job = job;
     }
@@ -12,6 +17,10 @@ public class CrewMember {
     public CrewMember(){
         name = "Crew Member";
         job = "Actor";
+    }
+
+    public long getID() {
+        return ID;
     }
 
     public void setName(String name){
