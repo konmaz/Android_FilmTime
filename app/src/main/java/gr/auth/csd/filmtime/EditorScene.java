@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import java.util.Objects;
 
@@ -74,6 +76,14 @@ public class EditorScene extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         saveButton = view.findViewById(R.id.save);
+
+        LinearLayout containerLayout  = view.findViewById(R.id.fragment_editor_scene_crew_linear_layout);
+        for (int i = 0; i < 50; i++) {
+            CheckBox checkBox = new CheckBox(view.getContext());
+            checkBox.setText(String.valueOf(i));
+            containerLayout.addView(checkBox);
+        }
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override

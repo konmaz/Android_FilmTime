@@ -16,23 +16,28 @@
 
         <TextView
             android:id="@+id/item_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/scene"
             android:textColor="@android:color/white"
             android:textSize="30sp"
             card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/edit"
             card_view:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/item_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/scene_detail"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@android:color/white"
             card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/edit"
             card_view:layout_constraintTop_toBottomOf="@+id/item_title" />
 
         <Button
