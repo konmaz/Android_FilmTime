@@ -1,6 +1,5 @@
 package gr.auth.csd.filmtime;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,21 +7,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import gr.auth.csd.filmtime.helpers.CrewMember;
-import gr.auth.csd.filmtime.helpers.Scene;
 
-public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterScene.ViewHolder>{
+public class RecyclerAdapterAssets extends RecyclerView.Adapter<RecyclerAdapterAssets.ViewHolder>{
 
-    private final ArrayList<Scene> scenes;
+    private final ArrayList<CrewMember> crewMemberArrayList;
 
-    public RecyclerAdapterScene(ArrayList<Scene> scenes){
-        this.scenes = scenes;
+    public RecyclerAdapterAssets(HashSet<CrewMember> crewMemberArrayList){
+        this.crewMemberArrayList = new ArrayList<>(crewMemberArrayList);
     }
     @NonNull
     @Override
@@ -33,36 +31,31 @@ public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterSc
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Scene scene = scenes.get(position);
-        holder.itemTitle.setText(scene.getName());
-        StringBuilder crewText = new StringBuilder();
-        for (CrewMember crewMember : scene.getCrewMembers()) { // for loop iterator
-            String nameOfCrew = crewMember.getName();
-            String jobOfCrew = crewMember.getJob();
-            crewText.append(nameOfCrew).append(": ").append(jobOfCrew).append(", ");
-        }
-        holder.itemDetail.setText(crewText);
-        holder.itemView.setTag(scene);
+        CrewMember member = crewMemberArrayList.get(position);
+        holder.itemTitle.setText(member.getName());
 
-        holder.itemButton.setTag(scene);
+        holder.itemDetail.setText(member.getJob());
+        holder.itemView.setTag(member);
 
-        holder.itemButton.setOnClickListener(v -> {
-            Scene scene1 = (Scene) v.getTag();
-            if (scene1 != null) {
-                Bundle args = new Bundle();
-                args.putLong("scene_id", scene1.getID());
-                args.putString("title", "Edit"); // this changed the top bar title
-                Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
-                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
-            }
-        });
+        holder.itemButton.setTag(member);
+
+//        holder.itemButton.setOnClickListener(v -> {
+//            Scene scene1 = (Scene) v.getTag();
+//            if (scene1 != null) {
+//                Bundle args = new Bundle();
+//                args.putLong("scene_id", scene1.getID());
+//                args.putString("title", "Edit"); // this changed the top bar title
+//                Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
+//                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 
     @Override
     public int getItemCount() {
 
-        return scenes.size();
+        return crewMemberArrayList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

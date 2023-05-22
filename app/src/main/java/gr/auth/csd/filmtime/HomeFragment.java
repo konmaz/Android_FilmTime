@@ -33,10 +33,19 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
-                        .navigate(R.id.HomeFragment);
+                        .navigate(R.id.action_HomeFragment_to_SceneFragment);
+            }
+        });
+
+        binding.buttonAssets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_assetsFragment);
             }
         });
     }
+
+
 
     @Override
     public void onDestroyView() {

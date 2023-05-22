@@ -12,8 +12,11 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/HomeFragment"
+            android:id="@+id/action_HomeFragment_to_SceneFragment"
             app:destination="@id/ScenesFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_assetsFragment"
+            app:destination="@id/assetsFragment" />
     </fragment>
     <fragment
         android:id="@+id/ScenesFragment"
@@ -41,5 +44,14 @@
             app:destination="@id/ScenesFragment"
             app:popUpTo="@+id/ScenesFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/assetsFragment"
+        android:name="gr.auth.csd.filmtime.AssetsFragment"
+        android:label="Assets"
+        tools:layout="@layout/fragment_assets" >
+        <action
+            android:id="@+id/action_assetsFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
 </navigation>
