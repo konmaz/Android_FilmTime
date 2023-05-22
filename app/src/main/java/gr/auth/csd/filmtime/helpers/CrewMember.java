@@ -1,7 +1,12 @@
 package gr.auth.csd.filmtime.helpers;
 
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
@@ -30,12 +35,32 @@ public class CrewMember implements Comparable<CrewMember> {
         this.availabilities.add(date);
     }
 
+    public void addDate(@NonNull Calendar date){
+        int year = date.get(Calendar.YEAR);
+        int month = date.get(Calendar.MONTH) + 1;
+        int dayOfMonth = date.get(Calendar.DAY_OF_MONTH);
+
+        addDate(LocalDate.of(year, month, dayOfMonth));
+    }
+
     public void removeDate(LocalDate date){
         this.availabilities.remove(date);
     }
 
     public TreeSet<LocalDate> getAvailabilities(){
         return this.availabilities;
+    }
+
+    public List<Calendar> getAvailabilitiesCalendarDatatype(){
+        List<Calendar> calendarList = new ArrayList<>();
+
+        for (LocalDate availability : this.availabilities) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.set(availability.getYear(), availability.getMonthValue() - 1, availability.getDayOfMonth());
+            calendarList.add(calendar);
+        }
+        return calendarList;
     }
 
 //    public CrewMember(){
@@ -87,5 +112,8 @@ public class CrewMember implements Comparable<CrewMember> {
 
     public void setAvailabilities(TreeSet<LocalDate> availabilities) {
         this.availabilities = availabilities;
+    }
+    public void deleteAvailabilities() {
+        this.availabilities = new TreeSet<>();
     }
 }

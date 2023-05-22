@@ -1,5 +1,6 @@
 package gr.auth.csd.filmtime;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -39,16 +41,16 @@ public class RecyclerAdapterAssets extends RecyclerView.Adapter<RecyclerAdapterA
 
         holder.itemButton.setTag(member);
 
-//        holder.itemButton.setOnClickListener(v -> {
-//            Scene scene1 = (Scene) v.getTag();
-//            if (scene1 != null) {
-//                Bundle args = new Bundle();
-//                args.putLong("scene_id", scene1.getID());
-//                args.putString("title", "Edit"); // this changed the top bar title
-//                Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
-//                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
-//            }
-//        });
+        holder.itemButton.setOnClickListener(v -> {
+            CrewMember scene1 = (CrewMember) v.getTag();
+            if (scene1 != null) {
+                Bundle args = new Bundle();
+                args.putLong("crew_member_id", scene1.getID());
+                args.putString("title", "Edit"); // this changed the top bar title
+                Navigation.findNavController(v).navigate(R.id.action_assetsFragment_to_editorAsset, args);
+                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
+            }
+        });
 
     }
 

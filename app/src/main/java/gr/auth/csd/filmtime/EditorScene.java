@@ -93,7 +93,7 @@ public class EditorScene extends Fragment {
         if (parameter_scene_id != -1) {
             Log.d(TAG, "Edit");
             scene_obj = dbHandler.getScene(parameter_scene_id);
-            TextView sceneNameTextView = view.findViewById(R.id.editor_scene_scene_name);
+            TextView sceneNameTextView = view.findViewById(R.id.editTextSceneName);
             sceneNameTextView.setText(scene_obj.getName());
 
             //scene_crew_members = dbHandler.getCrewMembersForScene(parameter_scene_id);
@@ -165,8 +165,8 @@ public class EditorScene extends Fragment {
         }
 
         Database dbHandler = new Database(getContext());
-        TextView sceneNameTextView = view.findViewById(R.id.editor_scene_scene_name);
-        String sceneName = sceneNameTextView.getText().toString();
+        TextView sceneNameTextView = view.findViewById(R.id.editTextSceneName);
+        String sceneName = sceneNameTextView.getText().toString().trim();
         long scene_id;
         if (parameter_scene_id != -1) { // editing existing scene
             scene = dbHandler.getScene(parameter_scene_id);

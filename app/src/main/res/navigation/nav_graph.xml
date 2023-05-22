@@ -53,5 +53,22 @@
         <action
             android:id="@+id/action_assetsFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_assetsFragment_to_editorAsset"
+            app:destination="@id/editorAsset" />
+    </fragment>
+    <fragment
+        android:id="@+id/editorAsset"
+        android:name="gr.auth.csd.filmtime.EditorAsset"
+        android:label="{title} Asset"
+        tools:layout="@layout/fragment_editor_asset" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editorAsset_to_assetsFragment"
+            app:popUpTo="@+id/assetsFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/assetsFragment" />
     </fragment>
 </navigation>

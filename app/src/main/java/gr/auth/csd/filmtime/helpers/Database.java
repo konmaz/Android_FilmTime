@@ -211,6 +211,29 @@ public class Database extends SQLiteOpenHelper {
 
         return scenes;
     }
+    public CrewMember getCrewMember(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_CREW_MEMBERS, null, COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+
+        CrewMember crewMember = null;
+
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(1);
+            String job = cursor.getString(2);
+
+            byte[] serializedAvailabilities = cursor.getBlob(3);
+            TreeSet<LocalDate> availabilities = deserialize(serializedAvailabilities);
+
+            crewMember = new CrewMember(id, name, job);
+            crewMember.setAvailabilities(availabilities);
+        }
+
+        cursor.close();
+        db.close();
+
+        return crewMember;
+    }
 
     public HashSet<CrewMember> getCrewMembers() {
         HashSet<CrewMember> crew_members = new HashSet<CrewMember>();

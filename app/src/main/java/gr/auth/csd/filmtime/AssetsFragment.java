@@ -5,15 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import gr.auth.csd.filmtime.databinding.FragmentAssetsBinding;
 import gr.auth.csd.filmtime.helpers.Database;
@@ -84,7 +82,7 @@ public class AssetsFragment extends Fragment {
         Database dbHandler = new Database(getContext());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_assets);
-        //Button addButton = binding.addNewAsset;
+        View addButton = view.findViewById(R.id.add_new_Asset);
 
         layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -92,7 +90,17 @@ public class AssetsFragment extends Fragment {
         adapter = new RecyclerAdapterAssets(dbHandler.getCrewMembers());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("title", "Add"); // this changed the top bar title
+                args.putLong("crew_member_id", -1);
+                Navigation.findNavController(v).navigate(R.id.action_assetsFragment_to_editorAsset, args);
 
+
+            }
+        });
 
 
 
