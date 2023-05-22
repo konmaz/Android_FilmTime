@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -37,9 +36,9 @@ public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterSc
         Scene scene = scenes.get(position);
         holder.itemTitle.setText(scene.getName());
         StringBuilder crewText = new StringBuilder();
-        for (int i = 0; i < scene.getCrewMembersSize(); i++) {
-            String nameOfCrew = scene.getCrewMember(i).getName();
-            String jobOfCrew = scene.getCrewMember(i).getJob();
+        for (CrewMember crewMember : scene.getCrewMembers()) { // for loop iterator
+            String nameOfCrew = crewMember.getName();
+            String jobOfCrew = crewMember.getJob();
             crewText.append(nameOfCrew).append(": ").append(jobOfCrew).append(", ");
         }
         holder.itemDetail.setText(crewText);
@@ -47,17 +46,14 @@ public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterSc
 
         holder.itemButton.setTag(scene);
 
-        holder.itemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Scene scene = (Scene) v.getTag();
-                if (scene != null) {
-                    Bundle args = new Bundle();
-                    args.putLong("scene_id", scene.getID());
-                    args.putString("title", "Edit"); // this changed the top bar title
-                    Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
-                    Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
-                }
+        holder.itemButton.setOnClickListener(v -> {
+            Scene scene1 = (Scene) v.getTag();
+            if (scene1 != null) {
+                Bundle args = new Bundle();
+                args.putLong("scene_id", scene1.getID());
+                args.putString("title", "Edit"); // this changed the top bar title
+                Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
+                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
             }
         });
 

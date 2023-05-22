@@ -8,11 +8,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 public class Database extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "filmtime.db";
     public static final String TABLE_SCENES = "scenes";
     public static final String TABLE_CREW_MEMBERS = "crew_members";
@@ -21,10 +29,33 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_SCENE_ID = "scene_id";
     public static final String COLUMN_MEMBER_ID = "member_id";
 
+    public static final String COLUMN_AVAILABILITIES = "availabilities";
+
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    private byte[] serialize(TreeSet<LocalDate> set) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(set);
+            oos.flush();
+            return baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private TreeSet<LocalDate> deserialize(byte[] bytes) {
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+             ObjectInputStream ois = new ObjectInputStream(bais)) {
+            return (TreeSet<LocalDate>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public void onCreate(@NonNull SQLiteDatabase db) {
         String CREATE_SCENES_TABLE = "CREATE TABLE " +
@@ -38,7 +69,8 @@ public class Database extends SQLiteOpenHelper {
                 TABLE_CREW_MEMBERS + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY," +
                 "name TEXT," +
-                "job TEXT" +
+                "job TEXT," +
+                COLUMN_AVAILABILITIES + " BLOB"+
                 ")";
         db.execSQL(CREATE_CREW_MEMBERS_TABLE);
 
@@ -50,7 +82,8 @@ public class Database extends SQLiteOpenHelper {
                 "FOREIGN KEY(" + COLUMN_SCENE_ID + ") REFERENCES " +
                 TABLE_SCENES + "(" + COLUMN_ID + ")," +
                 "FOREIGN KEY(" + COLUMN_MEMBER_ID + ") REFERENCES " +
-                TABLE_CREW_MEMBERS + "(" + COLUMN_ID + ")" +
+                TABLE_CREW_MEMBERS + "(" + COLUMN_ID + ")," +
+                "UNIQUE(" + COLUMN_SCENE_ID + ", " + COLUMN_MEMBER_ID + ")" +
                 ")";
         db.execSQL(CREATE_SCENE_CREW_MEMBERS_TABLE);
     }
@@ -80,8 +113,8 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<CrewMember> getCrewMembersForScene(long sceneId) {
-        ArrayList<CrewMember> crewMembers = new ArrayList<>();
+    public HashSet<CrewMember> getCrewMembersForScene(long sceneId) {
+        HashSet<CrewMember> crewMembers = new HashSet<>();
 
         String query = "SELECT " + TABLE_CREW_MEMBERS + "." + COLUMN_ID +
                 ", " + TABLE_CREW_MEMBERS + ".name" +
@@ -116,6 +149,7 @@ public class Database extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("name", crewMember.getName());
         values.put("job", crewMember.getJob());
+        values.put(COLUMN_AVAILABILITIES, serialize(crewMember.getAvailabilities()));
         long crewMemberId = db.insert(TABLE_CREW_MEMBERS, null, values);
         db.close();
         return crewMemberId;
@@ -127,6 +161,10 @@ public class Database extends SQLiteOpenHelper {
         values.put("name", scene.getName());
         long sceneId = db.insert(TABLE_SCENES, null, values);
         db.close();
+        ArrayList<Long> sceneCrewMembersIDs = new ArrayList<Long>(scene.getCrewMembersSize());
+        for (CrewMember item : scene.getCrewMembers()) {sceneCrewMembersIDs.add(item.getID());}
+        updateSceneCrewMembers(sceneId, sceneCrewMembersIDs);
+
         return sceneId;
     }
 
@@ -135,7 +173,24 @@ public class Database extends SQLiteOpenHelper {
         db.rawQuery("SELECT * FROM "+TABLE_SCENES,null);
     }
 
+    public Scene getScene(long id){
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        // Query the scenes table to retrieve the scene with the given id
+        Cursor cursor = db.query(TABLE_SCENES, null, COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+
+        Scene scene = null;
+
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(1);
+            scene = new Scene(id, name, getCrewMembersForScene(id));
+        }
+
+        cursor.close();
+        db.close();
+
+        return scene;
+    }
     public ArrayList<Scene> getScenes() {
         ArrayList<Scene> scenes = new ArrayList<>();
 
@@ -156,6 +211,89 @@ public class Database extends SQLiteOpenHelper {
 
         return scenes;
     }
+
+    public HashSet<CrewMember> getCrewMembers() {
+        HashSet<CrewMember> crew_members = new HashSet<CrewMember>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_CREW_MEMBERS, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                CrewMember crewMember = new CrewMember(cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getString(2));
+                byte[] serializedAvailabilities = cursor.getBlob(3);
+                TreeSet<LocalDate> availabilities = deserialize(serializedAvailabilities);
+                crewMember.setAvailabilities(availabilities);
+
+
+                crew_members.add(crewMember);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return crew_members;
+    }
+
+    public void updateScene(Scene scene, boolean updateSceneCrewMembers) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", scene.getName());
+        db.update(TABLE_SCENES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(scene.getID())});
+        db.close();
+        if (updateSceneCrewMembers) {
+            ArrayList<Long> sceneCrewMembersIDs = new ArrayList<Long>(scene.getCrewMembersSize());
+            for (CrewMember item : scene.getCrewMembers()) {
+                sceneCrewMembersIDs.add(item.getID());
+            }
+            updateSceneCrewMembers(scene.getID(), sceneCrewMembersIDs);
+        }
+    }
+
+    public void updateCrewMember(CrewMember crewMember) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", crewMember.getName());
+        values.put("job", crewMember.getJob());
+        values.put(COLUMN_AVAILABILITIES, serialize(crewMember.getAvailabilities()));
+        db.update(TABLE_CREW_MEMBERS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(crewMember.getID())});
+        db.close();
+    }
+
+    public void deleteScene(long sceneId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_SCENE_CREW_MEMBERS, COLUMN_SCENE_ID + " = ?", new String[]{String.valueOf(sceneId)}); // also delete all the participants in the scene
+        db.delete(TABLE_SCENES, COLUMN_ID + " = ?", new String[]{String.valueOf(sceneId)});
+        db.close();
+    }
+
+    public void deleteCrewMember(long crewMemberId) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_SCENE_CREW_MEMBERS, COLUMN_MEMBER_ID + " = ?", new String[]{String.valueOf(crewMemberId)});
+        db.delete(TABLE_CREW_MEMBERS, COLUMN_ID + " = ?", new String[]{String.valueOf(crewMemberId)});
+        db.close();
+    }
+
+    public void updateSceneCrewMembers(long sceneId, List<Long> crewMemberIds) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        // First, delete existing scene-crew-member relationships for the given scene ID
+        db.delete(TABLE_SCENE_CREW_MEMBERS, COLUMN_SCENE_ID + " = ?", new String[]{String.valueOf(sceneId)});
+
+        // Insert new scene-crew-member relationships for the given crew member IDs
+        for (Long crewMemberId : crewMemberIds) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SCENE_ID, sceneId);
+            values.put(COLUMN_MEMBER_ID, crewMemberId);
+            db.insert(TABLE_SCENE_CREW_MEMBERS, null, values);
+        }
+
+        db.close();
+    }
+
 
 
 }

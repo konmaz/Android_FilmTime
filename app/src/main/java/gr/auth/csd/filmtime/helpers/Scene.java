@@ -1,31 +1,33 @@
 package gr.auth.csd.filmtime.helpers;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 
 public class Scene implements Serializable {
     private long ID;
     private String name;
 
-    private ArrayList<CrewMember> crew;
+    private HashSet<CrewMember> crewMemberHashSet;
 
-    public Scene(String name, ArrayList<CrewMember> crew){
+    public Scene(String name, HashSet<CrewMember> crew){
         this.name = name;
-        this.crew = crew;
+        this.crewMemberHashSet = crew;
     }
 
     public Scene(){
         this.name = "Scene";
-        this.crew = new ArrayList<CrewMember>(Collections.singletonList(new CrewMember()));
+        this.crewMemberHashSet = new HashSet<CrewMember>();
     }
 
-    public Scene(long sceneId, String name, ArrayList<CrewMember> crew ) {
+    public Scene(String name){
+        this.name = name;
+        this.crewMemberHashSet = new HashSet<CrewMember>();
+    }
+
+    public Scene(long sceneId, String name, HashSet<CrewMember> crew ) {
         this.ID = sceneId;
         this.name = name;
-        this.crew = crew;
+        this.crewMemberHashSet = crew;
     }
 
     public long getID() {
@@ -40,32 +42,32 @@ public class Scene implements Serializable {
         return name;
     }
 
-    public void setCrewList(ArrayList<CrewMember> crew){
-        this.crew = crew;
+    public void addCrewMemberToScene(CrewMember member){
+        this.crewMemberHashSet.add(member);
     }
 
-    public void pushCrewMember(CrewMember member){
-        this.crew.add(member);
+    public void removeCrewMember(CrewMember member){
+        this.crewMemberHashSet.remove(member);
     }
 
-    public void popCrewMember(){
-        this.crew.remove(this.crew.size());
+    public void insertCrewMember(CrewMember member){
+        this.crewMemberHashSet.add(member);
     }
 
-    public void removeCrewMember(int position){
-        this.crew.remove(position);
+    public boolean CrewMemberInScene(CrewMember member){
+        return this.crewMemberHashSet.contains(member);
     }
 
-    public void insertCrewMember(CrewMember member, int position){
-        this.crew.add(position, member);
-    }
-
-    public CrewMember getCrewMember(int position){
-        return this.crew.get(position);
+    public HashSet<CrewMember> getCrewMembers() {
+        return new HashSet<>(crewMemberHashSet); //defensive copy
     }
 
     public int getCrewMembersSize(){
-        return this.crew.size();
+        return this.crewMemberHashSet.size();
+    }
+
+    public void replaceCrewMembers(HashSet<CrewMember> crewMemberHashSet){
+        this.crewMemberHashSet = crewMemberHashSet;
     }
 
 }

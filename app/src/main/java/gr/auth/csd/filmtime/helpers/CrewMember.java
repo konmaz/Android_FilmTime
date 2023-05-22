@@ -1,23 +1,47 @@
 package gr.auth.csd.filmtime.helpers;
 
-import java.io.Serializable;
 
-public class CrewMember implements Serializable {
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.TreeSet;
+
+public class CrewMember implements Comparable<CrewMember> {
     private long ID; // used for database
     private String name;
 
     private String job;
 
+    private TreeSet<LocalDate> availabilities;
+
     public CrewMember(long ID,String name, String job){
         this.ID = ID;
         this.name = name;
         this.job = job;
+        this.availabilities = new TreeSet<>();
     }
 
-    public CrewMember(){
-        name = "Crew Member";
-        job = "Actor";
+    public CrewMember(String name, String job){
+        this.name = name;
+        this.job = job;
+        this.availabilities = new TreeSet<>();
     }
+
+    public void addDate(LocalDate date){
+        this.availabilities.add(date);
+    }
+
+    public void removeDate(LocalDate date){
+        this.availabilities.remove(date);
+    }
+
+    public TreeSet<LocalDate> getAvailabilities(){
+        return this.availabilities;
+    }
+
+//    public CrewMember(){
+//        name = "Crew Member";
+//        job = "Actor";
+//    }
 
     public long getID() {
         return ID;
@@ -37,5 +61,31 @@ public class CrewMember implements Serializable {
 
     public String getJob(){
         return job;
+    }
+
+    @Override
+    public int compareTo(CrewMember o) {
+        return Long.compare(this.ID, o.ID);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        CrewMember other = (CrewMember) obj;
+        return Objects.equals(ID, other.ID) && Objects.equals(name, other.name) && Objects.equals(job, other.job);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID ,name, job);
+    }
+
+    public void setAvailabilities(TreeSet<LocalDate> availabilities) {
+        this.availabilities = availabilities;
     }
 }
