@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_assetsFragment"
             app:destination="@id/assetsFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_calendar"
+            app:destination="@id/calendar" />
     </fragment>
     <fragment
         android:id="@+id/ScenesFragment"
@@ -70,5 +73,14 @@
             app:popUpTo="@+id/assetsFragment"
             app:popUpToInclusive="true"
             app:destination="@id/assetsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendar"
+        android:name="gr.auth.csd.filmtime.Calendar"
+        android:label="Calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendar_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
 </navigation>

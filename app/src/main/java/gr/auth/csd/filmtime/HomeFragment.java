@@ -43,6 +43,13 @@ public class HomeFragment extends Fragment {
                 NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_assetsFragment);
             }
         });
+
+        binding.buttonCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.action_HomeFragment_to_calendar);
+            }
+        });
     }
 
 

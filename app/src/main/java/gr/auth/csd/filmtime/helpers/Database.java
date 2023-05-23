@@ -119,6 +119,7 @@ public class Database extends SQLiteOpenHelper {
         String query = "SELECT " + TABLE_CREW_MEMBERS + "." + COLUMN_ID +
                 ", " + TABLE_CREW_MEMBERS + ".name" +
                 ", " + TABLE_CREW_MEMBERS + ".job" +
+                ", " + TABLE_CREW_MEMBERS + "."+COLUMN_AVAILABILITIES +
                 " FROM " + TABLE_SCENE_CREW_MEMBERS +
                 " JOIN " + TABLE_CREW_MEMBERS +
                 " ON " + TABLE_SCENE_CREW_MEMBERS + "." + COLUMN_MEMBER_ID + " = " +
@@ -133,7 +134,11 @@ public class Database extends SQLiteOpenHelper {
                 int crewMemberId = cursor.getInt(0);
                 String name = cursor.getString(1);
                 String job = cursor.getString(2);
+                byte[] serializedAvailabilities = cursor.getBlob(3);
+                TreeSet<LocalDate> availabilities = deserialize(serializedAvailabilities);
+
                 CrewMember crewMember = new CrewMember(crewMemberId, name, job);
+                crewMember.setAvailabilities(availabilities);
                 crewMembers.add(crewMember);
             } while (cursor.moveToNext());
         }
