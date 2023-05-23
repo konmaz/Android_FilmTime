@@ -1,5 +1,6 @@
 package gr.auth.csd.filmtime;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -20,13 +20,18 @@ import gr.auth.csd.filmtime.helpers.Scene;
 
 public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder>{
 
-    private final ArrayList<Scene> scenes;
+    private ArrayList<Scene> scenes;
     private final ArrayList<CrewMember> crewMemberArrayList;
+
+    private boolean isButtonEnabled = true;
 
 
     public RecyclerAdapterGeneric(ArrayList<Scene> scenes){
         this.crewMemberArrayList = null;
         this.scenes = scenes;
+    }
+    public void disableButton(){
+        this.isButtonEnabled = false;
     }
 
     public RecyclerAdapterGeneric(HashSet<CrewMember> crewMemberArrayList){
@@ -57,21 +62,33 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
             String jobOfCrew = crewMember.getJob();
             crewText.append(nameOfCrew).append(": ").append(jobOfCrew).append(", ");
         }
+        if(crewText.length()>0)
+            crewText.delete(crewText.length()-2,crewText.length()-1);
         holder.itemDetail.setText(crewText);
         holder.itemView.setTag(scene);
 
         holder.itemButton.setTag(scene);
 
-        holder.itemButton.setOnClickListener(v -> {
-            Scene scene1 = (Scene) v.getTag();
-            if (scene1 != null) {
-                Bundle args = new Bundle();
-                args.putLong("scene_id", scene1.getID());
-                args.putString("title", "Edit"); // this changed the top bar title
-                Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
-                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
-            }
-        });
+
+        if (isButtonEnabled) {
+            holder.itemButton.setEnabled(true);
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#386150"));
+            holder.itemButton.setVisibility(View.GONE);
+            holder.itemButton.setEnabled(false);
+        }
+
+        if (isButtonEnabled)
+            holder.itemButton.setOnClickListener(v -> {
+                Scene scene1 = (Scene) v.getTag();
+                if (scene1 != null) {
+                    Bundle args = new Bundle();
+                    args.putLong("scene_id", scene1.getID());
+                    args.putString("title", "Edit"); // this changed the top bar title
+                    Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
+                    //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
+                }
+            });
     }
 
     private void onBindViewHolderAsset(ViewHolder holder, int position) {
@@ -102,6 +119,10 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
             return crewMemberArrayList.size();
         else
             return scenes.size();
+    }
+
+    public void setScenes(ArrayList<Scene> scenes) {
+        this.scenes = scenes;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

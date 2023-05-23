@@ -43,10 +43,6 @@ public class CrewMember implements Comparable<CrewMember> {
         addDate(LocalDate.of(year, month, dayOfMonth));
     }
 
-    public void removeDate(LocalDate date){
-        this.availabilities.remove(date);
-    }
-
     public TreeSet<LocalDate> getAvailabilities(){
         return this.availabilities;
     }
