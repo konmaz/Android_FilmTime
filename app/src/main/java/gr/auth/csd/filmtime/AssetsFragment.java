@@ -29,7 +29,7 @@ public class AssetsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter<RecyclerAdapterAssets.ViewHolder> adapter;
+    private RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder> adapter;
     private static final String ARG_PARAM1 = "param1";
 
     private static final String ARG_PARAM2 = "param2";
@@ -87,7 +87,7 @@ public class AssetsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapterAssets(dbHandler.getCrewMembers());
+        adapter = new RecyclerAdapterGeneric(dbHandler.getCrewMembers());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         addButton.setOnClickListener(new View.OnClickListener() {

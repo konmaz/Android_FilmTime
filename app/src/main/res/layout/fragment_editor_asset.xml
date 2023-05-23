@@ -46,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:selectionColor="#384D48"
         app:type="many_days_picker" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

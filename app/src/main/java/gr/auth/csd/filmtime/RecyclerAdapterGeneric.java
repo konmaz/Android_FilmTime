@@ -13,16 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Scene;
 
-public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterScene.ViewHolder>{
+public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder>{
 
     private final ArrayList<Scene> scenes;
+    private final ArrayList<CrewMember> crewMemberArrayList;
 
-    public RecyclerAdapterScene(ArrayList<Scene> scenes){
+
+    public RecyclerAdapterGeneric(ArrayList<Scene> scenes){
+        this.crewMemberArrayList = null;
         this.scenes = scenes;
+    }
+
+    public RecyclerAdapterGeneric(HashSet<CrewMember> crewMemberArrayList){
+        this.scenes = null;
+        this.crewMemberArrayList = new ArrayList<>(crewMemberArrayList);
     }
     @NonNull
     @Override
@@ -33,6 +42,13 @@ public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterSc
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (scenes == null)
+            onBindViewHolderAsset(holder, position);
+        else
+            onBindViewHolderScene(holder,position);
+    }
+
+    private void onBindViewHolderScene(@NonNull ViewHolder holder, int position){
         Scene scene = scenes.get(position);
         holder.itemTitle.setText(scene.getName());
         StringBuilder crewText = new StringBuilder();
@@ -56,13 +72,36 @@ public class RecyclerAdapterScene extends RecyclerView.Adapter<RecyclerAdapterSc
                 //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void onBindViewHolderAsset(ViewHolder holder, int position) {
+        CrewMember member = crewMemberArrayList.get(position);
+        holder.itemTitle.setText(member.getName());
+
+        holder.itemDetail.setText(member.getJob());
+        holder.itemView.setTag(member);
+
+        holder.itemButton.setTag(member);
+
+        holder.itemButton.setOnClickListener(v -> {
+            CrewMember scene1 = (CrewMember) v.getTag();
+            if (scene1 != null) {
+                Bundle args = new Bundle();
+                args.putLong("crew_member_id", scene1.getID());
+                args.putString("title", "Edit"); // this changed the top bar title
+                Navigation.findNavController(v).navigate(R.id.action_assetsFragment_to_editorAsset, args);
+                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-
-        return scenes.size();
+        if (scenes == null)
+            return crewMemberArrayList.size();
+        else
+            return scenes.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

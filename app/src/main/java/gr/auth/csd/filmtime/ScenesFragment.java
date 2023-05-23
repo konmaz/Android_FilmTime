@@ -23,7 +23,7 @@ public class ScenesFragment extends Fragment {
     private FragmentScenesBinding binding;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter<RecyclerAdapterScene.ViewHolder> adapter;
+    private RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder> adapter;
     private Button addButton;
 
     @Override
@@ -80,7 +80,7 @@ public class ScenesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapterScene(dbHandler.getScenes());
+        adapter = new RecyclerAdapterGeneric(dbHandler.getScenes());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
