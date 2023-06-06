@@ -11,7 +11,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Asset Name">
+        android:hint="@string/asset_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextAssetName"
@@ -23,7 +23,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Asset Job">
+        android:hint="@string/asset_job">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextAssetJob"
@@ -35,11 +35,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Availabilities" />
+        android:text="@string/availabilities" />
 
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
@@ -58,7 +57,7 @@
             android:id="@+id/editor_asset_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -69,10 +68,11 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FF0000"
             android:drawableLeft="@drawable/baseline_delete_24"
-            android:text="Delete"
+            android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/editor_asset_save"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="RtlHardcoded" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,7 +19,8 @@
             android:src="@drawable/clapperboard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/clapperboard_logo_of_the_app" />
 
         <TextView
             android:id="@+id/textView"
@@ -42,6 +43,8 @@
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <Button
+                android:background="@drawable/button_background"
+                app:backgroundTint="@null"
                 android:id="@+id/button_assets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,19 +53,25 @@
                 app:icon="@drawable/baseline_people_24" />
 
             <Button
+                android:background="@drawable/button_background"
+                app:backgroundTint="@null"
                 android:id="@+id/button_scenes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/scenes"
                 android:textSize="20sp"
+                android:layout_marginTop="10dp"
                 app:icon="@drawable/baseline_list_24" />
 
             <Button
+                android:background="@drawable/button_background"
+                app:backgroundTint="@null"
                 android:id="@+id/button_calendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/calendar"
                 android:textSize="20sp"
+                android:layout_marginTop="10dp"
                 app:icon="@drawable/baseline_calendar_month_24" />
 
         </LinearLayout>

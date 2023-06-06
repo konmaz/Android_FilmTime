@@ -3,12 +3,6 @@ package gr.auth.csd.filmtime;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,23 +12,19 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Objects;
 
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Database;
 import gr.auth.csd.filmtime.helpers.Scene;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditorScene#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EditorScene extends Fragment {
-
-    private Button saveButton;
-    private Button deleteButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,26 +34,8 @@ public class EditorScene extends Fragment {
     // TODO: Rename and change types of parameters
     private long parameter_scene_id = -1;
 
-    private View Text_scene_Name;
-
     public EditorScene() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment EditorScene.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditorScene newInstance(long param1) {
-        EditorScene fragment = new EditorScene();
-        Bundle args = new Bundle();
-        args.putLong(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -96,9 +68,8 @@ public class EditorScene extends Fragment {
             TextView sceneNameTextView = view.findViewById(R.id.editTextSceneName);
             sceneNameTextView.setText(scene_obj.getName());
 
-            //scene_crew_members = dbHandler.getCrewMembersForScene(parameter_scene_id);
         }
-        saveButton = view.findViewById(R.id.editor_scene_save);
+        Button saveButton = view.findViewById(R.id.editor_scene_save);
         int i = 0;
         LinearLayout containerLayout = view.findViewById(R.id.fragment_editor_scene_crew_linear_layout);
         for (CrewMember member : allCrewMembers) {
@@ -125,12 +96,12 @@ public class EditorScene extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveSceneToDatabase(view, finalScene_obj);
+                saveSceneToDatabase(view);
 
                 Navigation.findNavController(v).navigate(R.id.action_editorScene_to_ScenesFragment);
             }
         });
-        deleteButton = view.findViewById(R.id.editor_scene_delete);
+        Button deleteButton = view.findViewById(R.id.editor_scene_delete);
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,12 +114,11 @@ public class EditorScene extends Fragment {
         });
 
 
-
         super.onViewCreated(view, savedInstanceState);
     }
 
 
-    private void saveSceneToDatabase(View view,Scene scene) {
+    private void saveSceneToDatabase(View view) {
         LinearLayout containerLayout = view.findViewById(R.id.fragment_editor_scene_crew_linear_layout);
         int childCount = containerLayout.getChildCount();
         ArrayList<Long> updatedCrewMembers = new ArrayList<>(childCount);
@@ -157,7 +127,7 @@ public class EditorScene extends Fragment {
             if (childView instanceof CheckBox) {
                 CheckBox checkBox = (CheckBox) childView;
                 boolean isChecked = checkBox.isChecked();
-                if (isChecked){
+                if (isChecked) {
                     long id = (long) checkBox.getTag();
                     updatedCrewMembers.add(id);
                 }
@@ -168,6 +138,7 @@ public class EditorScene extends Fragment {
         TextView sceneNameTextView = view.findViewById(R.id.editTextSceneName);
         String sceneName = sceneNameTextView.getText().toString().trim();
         long scene_id;
+        Scene scene;
         if (parameter_scene_id != -1) { // editing existing scene
             scene = dbHandler.getScene(parameter_scene_id);
             scene.setName(sceneName);
@@ -179,7 +150,7 @@ public class EditorScene extends Fragment {
         }
 
 
-        dbHandler.updateSceneCrewMembers(scene_id,updatedCrewMembers);
+        dbHandler.updateSceneCrewMembers(scene_id, updatedCrewMembers);
 
     }
 }

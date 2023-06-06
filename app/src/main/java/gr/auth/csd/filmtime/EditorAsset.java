@@ -12,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.CalendarView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,43 +22,18 @@ import java.util.List;
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Database;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditorAsset#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EditorAsset extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "crew_member_id";
 
     private static final String SELECTED_DATES_KEY = "selected_dates";
 
     private CalendarView calendarView;
-    private List<Calendar> selectedDates;
 
-    // TODO: Rename and change types of parameters
     private long parameter_asset_id;
 
     public EditorAsset() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment EditorAsset.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditorAsset newInstance(Long param1) {
-        EditorAsset fragment = new EditorAsset();
-        Bundle args = new Bundle();
-        args.putLong(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -98,17 +71,17 @@ public class EditorAsset extends Fragment {
         if (savedInstanceState != null) {
             // Restore the selected dates from the saved state
             calendarView.setSelectedDates((List<Calendar>) savedInstanceState.getSerializable(SELECTED_DATES_KEY));
-        } else if (crewMemberObj != null){
+        } else if (crewMemberObj != null) {
             // Use the initial selected dates
             List<Calendar> calendarList = crewMemberObj.getAvailabilitiesCalendarDatatype();
             calendarView.setSelectedDates(calendarList);
         }
 
-    if (crewMemberObj != null){
+        if (crewMemberObj != null) {
             AssetNameTextView.setText(crewMemberObj.getName());
             AssetJobTextView.setText(crewMemberObj.getJob());
 
-        }else
+        } else
             crewMemberObj = new CrewMember(AssetNameTextView.getText().toString().trim(), AssetJobTextView.getText().toString());
 
         Button saveButton = view.findViewById(R.id.editor_asset_save);
@@ -146,9 +119,6 @@ public class EditorAsset extends Fragment {
 
             }
         });
-
-
-
 
 
     }

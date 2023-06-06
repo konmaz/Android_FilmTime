@@ -86,12 +86,12 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
                     args.putLong("scene_id", scene1.getID());
                     args.putString("title", "Edit"); // this changed the top bar title
                     Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
-                    //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
                 }
             });
     }
 
     private void onBindViewHolderAsset(ViewHolder holder, int position) {
+        assert crewMemberArrayList != null;
         CrewMember member = crewMemberArrayList.get(position);
         holder.itemTitle.setText(member.getName());
 
@@ -107,7 +107,6 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
                 args.putLong("crew_member_id", scene1.getID());
                 args.putString("title", "Edit"); // this changed the top bar title
                 Navigation.findNavController(v).navigate(R.id.action_assetsFragment_to_editorAsset, args);
-                //Snackbar.make(v, "Click detected on item", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -115,8 +114,10 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
 
     @Override
     public int getItemCount() {
-        if (scenes == null)
+        if (scenes == null) {
+            assert crewMemberArrayList != null;
             return crewMemberArrayList.size();
+        }
         else
             return scenes.size();
     }
@@ -138,20 +139,10 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
             itemButton = itemView.findViewById(R.id.edit);
 
 
-//            itemButton.setOnClickListener(new View.OnClickListener() {
-//                @Override public void onClick(View v) {
-//                    Scene scene = (Scene) v.getTag();
-//                    int position = getAdapterPosition() + 1;
-//                    Bundle args = new Bundle();
-//                    args.putLong("scene_id", scene.getID()); // i want to refrence the id of the scene.getCrewMember(i).getID();
-//                    Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene);
-//                    Snackbar.make(v, "Click detected on item " + position,
-//                            Snackbar.LENGTH_LONG).show();
-//                }
-//            });
-
         }
 
 
     }
+
+
 }

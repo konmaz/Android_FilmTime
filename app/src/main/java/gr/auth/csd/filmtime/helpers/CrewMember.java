@@ -59,10 +59,6 @@ public class CrewMember implements Comparable<CrewMember> {
         return calendarList;
     }
 
-//    public CrewMember(){
-//        name = "Crew Member";
-//        job = "Actor";
-//    }
 
     public long getID() {
         return ID;

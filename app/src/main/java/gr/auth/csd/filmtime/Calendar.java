@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import gr.auth.csd.filmtime.databinding.FragmentCalendarBinding;
@@ -34,7 +35,6 @@ import gr.auth.csd.filmtime.helpers.Scheduler;
 public class Calendar extends Fragment {
 
     private CalendarView calendarView;
-    private RecyclerView itemRecyclerView;
     private RecyclerAdapterGeneric itemRecyclerAdapter;
 
     private List<EventDay> eventDays;
@@ -93,7 +93,7 @@ public class Calendar extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         calendarView = binding.calendarView;
-        itemRecyclerView = binding.itemRecyclerView;
+        RecyclerView itemRecyclerView = binding.itemRecyclerView;
 
         eventDays = new ArrayList<>();
 
@@ -110,9 +110,19 @@ public class Calendar extends Fragment {
 
         calendarView.setOnDayClickListener(eventDay -> {
             java.util.Calendar selectedDate = eventDay.getCalendar();
-            ArrayList<Scene> scenes = getItemsForDate(selectedDate);
-            displayItemList(scenes);
+
+            java.util.Calendar visibleMonthStartDate = calendarView.getCurrentPageDate();
+
+            java.util.Calendar visibleMonthEndDate = (java.util.Calendar) visibleMonthStartDate.clone();
+            visibleMonthEndDate.add(java.util.Calendar.MONTH, 1);
+            visibleMonthEndDate.add(java.util.Calendar.DAY_OF_MONTH, -1);
+
+            if (selectedDate.compareTo(visibleMonthStartDate) >= 0 && selectedDate.compareTo(visibleMonthEndDate) <= 0) {
+                ArrayList<Scene> scenes = getItemsForDate(selectedDate);
+                displayItemList(scenes);
+            }
         });
+
     }
 
     private void addEventDots() {
@@ -126,8 +136,12 @@ public class Calendar extends Fragment {
     }
 
     private void displayItemList(ArrayList<Scene> scenes) {
+        binding.calendarNoScenesMessage.setVisibility(View.INVISIBLE);
         itemRecyclerAdapter.setScenes(scenes);
         itemRecyclerAdapter.notifyDataSetChanged();
+        if (scenes.size() == 0){
+            binding.calendarNoScenesMessage.setVisibility(View.VISIBLE);
+        }
     }
 
     private ArrayList<Scene> getItemsForDate(java.util.Calendar date) {
@@ -138,7 +152,7 @@ public class Calendar extends Fragment {
         int day = date.get(java.util.Calendar.DAY_OF_MONTH);
 
         if (possibleShootingDates.containsKey(LocalDate.of(year, month, day))) {
-            scenes.addAll(possibleShootingDates.get(LocalDate.of(year, month, day)));
+            scenes.addAll(Objects.requireNonNull(possibleShootingDates.get(LocalDate.of(year, month, day))));
         }
 
         return scenes;

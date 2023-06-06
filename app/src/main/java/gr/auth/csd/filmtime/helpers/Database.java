@@ -166,17 +166,17 @@ public class Database extends SQLiteOpenHelper {
         values.put("name", scene.getName());
         long sceneId = db.insert(TABLE_SCENES, null, values);
         db.close();
-        ArrayList<Long> sceneCrewMembersIDs = new ArrayList<Long>(scene.getCrewMembersSize());
+        ArrayList<Long> sceneCrewMembersIDs = new ArrayList<>(scene.getCrewMembersSize());
         for (CrewMember item : scene.getCrewMembers()) {sceneCrewMembersIDs.add(item.getID());}
         updateSceneCrewMembers(sceneId, sceneCrewMembersIDs);
 
         return sceneId;
     }
 
-    public void debug_open_database_and_dont_close_it(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.rawQuery("SELECT * FROM "+TABLE_SCENES,null);
-    }
+//    public void debug_open_database_and_dont_close_it(){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.rawQuery("SELECT * FROM "+TABLE_SCENES,null);
+//    }
 
     public Scene getScene(long id){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -241,7 +241,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public HashSet<CrewMember> getCrewMembers() {
-        HashSet<CrewMember> crew_members = new HashSet<CrewMember>();
+        HashSet<CrewMember> crew_members = new HashSet<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_CREW_MEMBERS, null, null, null, null, null, null);
@@ -273,7 +273,7 @@ public class Database extends SQLiteOpenHelper {
         db.update(TABLE_SCENES, values, COLUMN_ID + " = ?", new String[]{String.valueOf(scene.getID())});
         db.close();
         if (updateSceneCrewMembers) {
-            ArrayList<Long> sceneCrewMembersIDs = new ArrayList<Long>(scene.getCrewMembersSize());
+            ArrayList<Long> sceneCrewMembersIDs = new ArrayList<>(scene.getCrewMembersSize());
             for (CrewMember item : scene.getCrewMembers()) {
                 sceneCrewMembersIDs.add(item.getID());
             }

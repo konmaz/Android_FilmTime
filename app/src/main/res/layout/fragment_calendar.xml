@@ -19,4 +19,15 @@
         android:layout_below="@id/calendarView"
         android:layout_marginTop="8dp" />
 
+    <TextView
+        android:id="@+id/calendarNoScenesMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendarView"
+        android:text="@string/no_scenes_can_be_shoot_this_date_pick_another_date"
+        android:textStyle="bold"
+        android:layout_margin="8dp"
+        android:visibility="visible"
+        />
+
 </RelativeLayout>
