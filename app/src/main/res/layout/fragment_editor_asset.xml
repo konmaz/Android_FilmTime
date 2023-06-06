@@ -5,8 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".MainActivity">
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    tools:context=".EditorAsset">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -29,29 +30,26 @@
             android:id="@+id/editTextAssetJob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapSentences|textAutoCorrect"
+            android:imeActionLabel="Tick"
             android:imeOptions="actionDone"
-            android:imeActionLabel="Tick"/>
+            android:inputType="textCapSentences|textAutoCorrect" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="@string/availabilities" />
 
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:selectionColor="#384D48"
         app:type="many_days_picker" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp">
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/editor_asset_save"
