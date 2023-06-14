@@ -11,6 +11,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import gr.auth.csd.filmtime.databinding.FragmentHomeBinding;
 
+/**
+ * This was created using the Android template Basic View Activity
+ */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;

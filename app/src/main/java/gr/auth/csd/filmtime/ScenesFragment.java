@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import gr.auth.csd.filmtime.databinding.FragmentScenesBinding;
 import gr.auth.csd.filmtime.helpers.Database;
 
-
+/**
+ * A fragment class responsible for displaying a list of Scenes using a RecyclerView.
+ */
 public class ScenesFragment extends Fragment {
 
     private FragmentScenesBinding binding;

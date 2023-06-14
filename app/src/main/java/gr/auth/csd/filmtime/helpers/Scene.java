@@ -3,6 +3,11 @@ package gr.auth.csd.filmtime.helpers;
 import java.io.Serializable;
 import java.util.HashSet;
 
+/**
+ * A class representing a scene in a film or production.
+ * It provides methods and properties to store and retrieve information about a scene.
+ * This class implements the Serializable interface to allow objects of this class to be serialized and deserialized.
+ */
 public class Scene implements Serializable {
     private long ID;
     private String name;
@@ -42,32 +47,12 @@ public class Scene implements Serializable {
         return name;
     }
 
-    public void addCrewMemberToScene(CrewMember member){
-        this.crewMemberHashSet.add(member);
-    }
-
-    public void removeCrewMember(CrewMember member){
-        this.crewMemberHashSet.remove(member);
-    }
-
-    public void insertCrewMember(CrewMember member){
-        this.crewMemberHashSet.add(member);
-    }
-
-    public boolean CrewMemberInScene(CrewMember member){
-        return this.crewMemberHashSet.contains(member);
-    }
-
     public HashSet<CrewMember> getCrewMembers() {
         return new HashSet<>(crewMemberHashSet); //defensive copy
     }
 
     public int getCrewMembersSize(){
         return this.crewMemberHashSet.size();
-    }
-
-    public void replaceCrewMembers(HashSet<CrewMember> crewMemberHashSet){
-        this.crewMemberHashSet = crewMemberHashSet;
     }
 
 }

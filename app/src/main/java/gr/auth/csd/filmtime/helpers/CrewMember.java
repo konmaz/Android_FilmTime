@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
+/**
+ * A helper class used to save information about a Crew Member <strong>also know as an Asset</strong>
+ * It implements comparable overwriting the compareTo, equals, hashCode to be able to be stored in a set correctly.
+ */
 public class CrewMember implements Comparable<CrewMember> {
     private long ID; // used for database
     private String name;

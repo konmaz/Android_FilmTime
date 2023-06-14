@@ -11,6 +11,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import gr.auth.csd.filmtime.databinding.ActivityMainBinding;
 
+/**
+ * Main Class entry point
+ * This was created using the Android template Basic View Activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;

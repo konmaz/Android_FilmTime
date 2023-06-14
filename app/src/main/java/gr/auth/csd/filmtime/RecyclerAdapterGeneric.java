@@ -18,26 +18,32 @@ import java.util.HashSet;
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Scene;
 
-public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder>{
+/**
+ * A generic RecyclerView adapter class used to populate data in a RecyclerView.
+ * It extends the RecyclerView.Adapter class and uses a ViewHolder to manage the views.
+ * It has two constructors one constructor accepts a list of scenes and the other a list of crew members (assets)
+ */
+public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder> {
 
-    private ArrayList<Scene> scenes;
     private final ArrayList<CrewMember> crewMemberArrayList;
-
+    private ArrayList<Scene> scenes;
     private boolean isButtonEnabled = true;
 
 
-    public RecyclerAdapterGeneric(ArrayList<Scene> scenes){
+    public RecyclerAdapterGeneric(ArrayList<Scene> scenes) {
         this.crewMemberArrayList = null;
         this.scenes = scenes;
     }
-    public void disableButton(){
-        this.isButtonEnabled = false;
-    }
 
-    public RecyclerAdapterGeneric(HashSet<CrewMember> crewMemberArrayList){
+    public RecyclerAdapterGeneric(HashSet<CrewMember> crewMemberArrayList) {
         this.scenes = null;
         this.crewMemberArrayList = new ArrayList<>(crewMemberArrayList);
     }
+
+    public void disableButton() {
+        this.isButtonEnabled = false;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,10 +56,10 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
         if (scenes == null)
             onBindViewHolderAsset(holder, position);
         else
-            onBindViewHolderScene(holder,position);
+            onBindViewHolderScene(holder, position);
     }
 
-    private void onBindViewHolderScene(@NonNull ViewHolder holder, int position){
+    private void onBindViewHolderScene(@NonNull ViewHolder holder, int position) {
         Scene scene = scenes.get(position);
         holder.itemTitle.setText(scene.getName());
         StringBuilder crewText = new StringBuilder();
@@ -62,8 +68,8 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
             String jobOfCrew = crewMember.getJob();
             crewText.append(nameOfCrew).append(": ").append(jobOfCrew).append(", ");
         }
-        if(crewText.length()>0)
-            crewText.delete(crewText.length()-2,crewText.length()-1);
+        if (crewText.length() > 0)
+            crewText.delete(crewText.length() - 2, crewText.length() - 1);
         holder.itemDetail.setText(crewText);
         holder.itemView.setTag(scene);
 
@@ -117,8 +123,7 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
         if (scenes == null) {
             assert crewMemberArrayList != null;
             return crewMemberArrayList.size();
-        }
-        else
+        } else
             return scenes.size();
     }
 

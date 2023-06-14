@@ -22,7 +22,10 @@ import java.util.List;
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Database;
 
-public class EditorAsset extends Fragment {
+/**
+ * A fragment class responsible for editing and managing an asset (CrewMember).
+ */
+public class EditorAssetFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "crew_member_id";
 
@@ -32,7 +35,7 @@ public class EditorAsset extends Fragment {
 
     private long parameter_asset_id;
 
-    public EditorAsset() {
+    public EditorAssetFragment() {
         // Required empty public constructor
     }
 

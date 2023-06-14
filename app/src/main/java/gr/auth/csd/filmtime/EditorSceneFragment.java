@@ -23,18 +23,15 @@ import java.util.HashSet;
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Database;
 import gr.auth.csd.filmtime.helpers.Scene;
+/**
+ * A fragment class responsible for editing and managing an Scene.
+ */
+public class EditorSceneFragment extends Fragment {
 
-public class EditorScene extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "scene_id";
-
-
-    // TODO: Rename and change types of parameters
     private long parameter_scene_id = -1;
 
-    public EditorScene() {
+    public EditorSceneFragment() {
         // Required empty public constructor
     }
 

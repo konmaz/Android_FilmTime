@@ -32,7 +32,10 @@ import gr.auth.csd.filmtime.helpers.Database;
 import gr.auth.csd.filmtime.helpers.Scene;
 import gr.auth.csd.filmtime.helpers.Scheduler;
 
-public class Calendar extends Fragment {
+/**
+ * A fragment class responsible for displaying a calendar and showing the scenes that can be shot on a user-defined day.
+ */
+public class CalendarFragment extends Fragment {
 
     private CalendarView calendarView;
     private RecyclerAdapterGeneric itemRecyclerAdapter;
@@ -42,7 +45,7 @@ public class Calendar extends Fragment {
 
     private FragmentCalendarBinding binding;
 
-    public Calendar() {
+    public CalendarFragment() {
         // Required empty public constructor
     }
 

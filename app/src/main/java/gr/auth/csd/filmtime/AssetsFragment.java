@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import gr.auth.csd.filmtime.helpers.Database;
 
+/**
+ * A fragment class responsible for displaying a list of assets (CrewMembers) using a RecyclerView.
+ */
 public class AssetsFragment extends Fragment {
 
     public AssetsFragment() {

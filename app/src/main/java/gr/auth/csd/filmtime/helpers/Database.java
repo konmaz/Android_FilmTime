@@ -19,6 +19,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
+/**
+ * A helper class for managing interactions with an SQLite database used to store Scenes and CrewMembers (Assets).
+ * It extends the SQLiteOpenHelper class to provide methods for creating, upgrading, and managing the database.
+ */
 public class Database extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "filmtime.db";
@@ -31,10 +35,19 @@ public class Database extends SQLiteOpenHelper {
 
     public static final String COLUMN_AVAILABILITIES = "availabilities";
 
+    /**
+     * Create a new database handler.
+     * @param context The context from which the database was created.
+     */
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Serializes a TreeSet and returns a bytes array
+     * @param set THe TreeSet to serialize
+     * @return A byte array containing the serialized TreeSet; Return null if there was an error
+     */
     private byte[] serialize(TreeSet<LocalDate> set) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(baos)) {
@@ -47,6 +60,11 @@ public class Database extends SQLiteOpenHelper {
         return null;
     }
 
+    /**
+     * Deserializes a bytes array and returns the TreeSet
+     * @param bytes A byte array containing the serialized TreeSet
+     * @return The TreeSet
+     */
     private TreeSet<LocalDate> deserialize(byte[] bytes) {
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
              ObjectInputStream ois = new ObjectInputStream(bais)) {
@@ -56,6 +74,10 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
+
+    /** Created the database
+     * @param db The database.
+     */
     @Override
     public void onCreate(@NonNull SQLiteDatabase db) {
         String CREATE_SCENES_TABLE = "CREATE TABLE " +
@@ -88,6 +110,11 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(CREATE_SCENE_CREW_MEMBERS_TABLE);
     }
 
+    /** On database update delete everything and start oven.
+     * @param db         The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCENE_CREW_MEMBERS);
@@ -113,6 +140,10 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    /** Returns the CrewMembers that are joining a scene.
+     * @param sceneId The scene ID.
+     * @return All the crew members objects that are joining a scene.
+     */
     public HashSet<CrewMember> getCrewMembersForScene(long sceneId) {
         HashSet<CrewMember> crewMembers = new HashSet<>();
 
@@ -149,6 +180,10 @@ public class Database extends SQLiteOpenHelper {
         return crewMembers;
     }
 
+    /** Creates a Crew Member and save it to the DataBase
+     * @param crewMember The crew member
+     * @return The id of the Crew Member as it saved in the DataBase
+     */
     public long createCrewMember(@NonNull CrewMember crewMember) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -160,6 +195,10 @@ public class Database extends SQLiteOpenHelper {
         return crewMemberId;
     }
 
+    /** Creates a scene and save it to the DataBase
+     * @param scene The crew member
+     * @return The id of the Scene as it saved in the DataBase
+     */
     public long createScene(@NonNull Scene scene) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -178,6 +217,11 @@ public class Database extends SQLiteOpenHelper {
 //        db.rawQuery("SELECT * FROM "+TABLE_SCENES,null);
 //    }
 
+    /**
+     * Fetch a scene from the database, giving the id of the scene
+     * @param id The id of the Scene
+     * @return The scene object
+     */
     public Scene getScene(long id){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -196,6 +240,10 @@ public class Database extends SQLiteOpenHelper {
 
         return scene;
     }
+
+    /**
+     * @return A array list containing all the scenes that are saved in the database
+     */
     public ArrayList<Scene> getScenes() {
         ArrayList<Scene> scenes = new ArrayList<>();
 
@@ -216,6 +264,12 @@ public class Database extends SQLiteOpenHelper {
 
         return scenes;
     }
+
+    /**
+     * Fetch a crew member from the database, giving the id of it
+     * @param id The id of the Crew member
+     * @return The scene object
+     */
     public CrewMember getCrewMember(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -240,6 +294,9 @@ public class Database extends SQLiteOpenHelper {
         return crewMember;
     }
 
+    /**
+     * @return A array list containing all the Crew Members that are saved in the database
+     */
     public HashSet<CrewMember> getCrewMembers() {
         HashSet<CrewMember> crew_members = new HashSet<>();
 
@@ -266,6 +323,11 @@ public class Database extends SQLiteOpenHelper {
         return crew_members;
     }
 
+    /**
+     * Make sure that the scene you are updating has been added to the database first
+     * @param scene Overwrites all the information of the scene saving all the information
+     * @param updateSceneCrewMembers If true it also updates all the Crew Members that are in the scene
+     */
     public void updateScene(Scene scene, boolean updateSceneCrewMembers) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -281,6 +343,10 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Make sure that the crew member you are updating has been added to the database first
+     * @param crewMember Overwrites all the information of the crew member saving all the information
+     */
     public void updateCrewMember(CrewMember crewMember) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -291,6 +357,10 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Deletes a scene given the ID
+     * @param sceneId The scene ID
+     */
     public void deleteScene(long sceneId) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_SCENE_CREW_MEMBERS, COLUMN_SCENE_ID + " = ?", new String[]{String.valueOf(sceneId)}); // also delete all the participants in the scene
@@ -298,13 +368,21 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Deletes a crew member given the ID, also it deletes all the partisipition of the crew member
+     * @param crewMemberId The Crew Member ID
+     */
     public void deleteCrewMember(long crewMemberId) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_SCENE_CREW_MEMBERS, COLUMN_MEMBER_ID + " = ?", new String[]{String.valueOf(crewMemberId)});
         db.delete(TABLE_CREW_MEMBERS, COLUMN_ID + " = ?", new String[]{String.valueOf(crewMemberId)});
         db.close();
     }
-
+    /**
+     * Update the participation list of a scene
+     * @param sceneId The scene ID
+     * @param crewMemberIds A list of the ID's of all the members that are participating in the scene
+     */
     public void updateSceneCrewMembers(long sceneId, List<Long> crewMemberIds) {
         SQLiteDatabase db = getWritableDatabase();
 

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_marginRight="8dp"
     android:layout_marginLeft="8dp"
-    tools:context=".EditorAsset">
+    tools:context=".EditorAssetFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
