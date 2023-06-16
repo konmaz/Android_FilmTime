@@ -45,16 +45,13 @@ public class ScenesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("title", "Add"); // this changed the top bar title
-                args.putLong("scene_id", -1);
-                Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
+        addButton.setOnClickListener(v -> { // Handle 'Add New Scene' button
+            Bundle args = new Bundle();
+            args.putString("title", "Add"); // this changed the top bar title
+            args.putLong("scene_id", -1);
+            Navigation.findNavController(v).navigate(R.id.action_ScenesFragment_to_editorScene, args);
 
 
-            }
         });
     }
 

@@ -89,38 +89,32 @@ public class EditorAssetFragment extends Fragment {
 
         Button saveButton = view.findViewById(R.id.editor_asset_save);
         CrewMember finalCrewMemberObj = crewMemberObj;
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        saveButton.setOnClickListener(v -> {
 
-                finalCrewMemberObj.setName(AssetNameTextView.getText().toString().trim());
-                finalCrewMemberObj.setJob(AssetJobTextView.getText().toString().trim());
-                finalCrewMemberObj.deleteAvailabilities();
+            finalCrewMemberObj.setName(AssetNameTextView.getText().toString().trim());
+            finalCrewMemberObj.setJob(AssetJobTextView.getText().toString().trim());
+            finalCrewMemberObj.deleteAvailabilities();
 
-                for (Calendar calendar : calendarView.getSelectedDates()) {
-                    finalCrewMemberObj.addDate(calendar);
-                }
-
-
-                if (parameter_asset_id == -1) { // create asset
-                    dbHandler.createCrewMember(finalCrewMemberObj);
-                } else { // update asset
-                    dbHandler.updateCrewMember(finalCrewMemberObj);
-                }
-                Navigation.findNavController(v).navigate(R.id.action_editorAsset_to_assetsFragment);
+            for (Calendar calendar : calendarView.getSelectedDates()) {
+                finalCrewMemberObj.addDate(calendar);
             }
+
+
+            if (parameter_asset_id == -1) { // create asset
+                dbHandler.createCrewMember(finalCrewMemberObj);
+            } else { // update asset
+                dbHandler.updateCrewMember(finalCrewMemberObj);
+            }
+            Navigation.findNavController(v).navigate(R.id.action_editorAsset_to_assetsFragment);
         });
 
 
         Button deleteButton = view.findViewById(R.id.editor_asset_delete);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (parameter_asset_id != -1)
-                    dbHandler.deleteCrewMember(parameter_asset_id);
-                Navigation.findNavController(v).navigate(R.id.action_editorAsset_to_assetsFragment);
+        deleteButton.setOnClickListener(v -> {
+            if (parameter_asset_id != -1)
+                dbHandler.deleteCrewMember(parameter_asset_id);
+            Navigation.findNavController(v).navigate(R.id.action_editorAsset_to_assetsFragment);
 
-            }
         });
 
 

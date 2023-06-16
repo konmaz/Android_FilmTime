@@ -12,7 +12,7 @@ public class Scene implements Serializable {
     private long ID;
     private String name;
 
-    private HashSet<CrewMember> crewMemberHashSet;
+    private final HashSet<CrewMember> crewMemberHashSet;
 
     public Scene(String name, HashSet<CrewMember> crew){
         this.name = name;

@@ -41,25 +41,20 @@ public class AssetsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        // populate the recycler view with the the assets (Crew Members)
         RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder> adapter = new RecyclerAdapterGeneric(dbHandler.getCrewMembers());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("title", "Add"); // this changed the top bar title
-                args.putLong("crew_member_id", -1);
-                Navigation.findNavController(v).navigate(R.id.action_assetsFragment_to_editorAsset, args);
+        addButton.setOnClickListener(v -> { // add event handling for button 'Add New Scene'
+            Bundle args = new Bundle();
+            args.putString("title", "Add"); // this changed the top bar title
+            args.putLong("crew_member_id", -1);
+            Navigation.findNavController(v).navigate(R.id.action_assetsFragment_to_editorAsset, args);
 
 
-            }
         });
 
 
     }
 
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

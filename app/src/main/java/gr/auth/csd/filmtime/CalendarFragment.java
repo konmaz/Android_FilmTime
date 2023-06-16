@@ -60,7 +60,7 @@ public class CalendarFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -111,7 +111,7 @@ public class CalendarFragment extends Fragment {
         displayItemList(getItemsForDate(calendarView.getFirstSelectedDate()));
 
 
-        calendarView.setOnDayClickListener(eventDay -> {
+        calendarView.setOnDayClickListener(eventDay -> {  //handle user clicking on a date
             java.util.Calendar selectedDate = eventDay.getCalendar();
 
             java.util.Calendar visibleMonthStartDate = calendarView.getCurrentPageDate();
@@ -119,7 +119,7 @@ public class CalendarFragment extends Fragment {
             java.util.Calendar visibleMonthEndDate = (java.util.Calendar) visibleMonthStartDate.clone();
             visibleMonthEndDate.add(java.util.Calendar.MONTH, 1);
             visibleMonthEndDate.add(java.util.Calendar.DAY_OF_MONTH, -1);
-
+            // check if user has selected a day outside of this month
             if (selectedDate.compareTo(visibleMonthStartDate) >= 0 && selectedDate.compareTo(visibleMonthEndDate) <= 0) {
                 ArrayList<Scene> scenes = getItemsForDate(selectedDate);
                 displayItemList(scenes);
@@ -132,7 +132,7 @@ public class CalendarFragment extends Fragment {
         for (LocalDate localdate : possibleShootingDates.keySet()) {
             java.util.Calendar calendar = java.util.Calendar.getInstance();
             calendar.set(localdate.getYear(), localdate.getMonthValue() - 1, localdate.getDayOfMonth());
-            eventDays.add(new EventDay(calendar, getCircleDrawableWithText(getContext(), String.valueOf(possibleShootingDates.get(localdate).size()))));
+            eventDays.add(new EventDay(calendar, getCircleDrawableWithText(getContext(), String.valueOf(Objects.requireNonNull(possibleShootingDates.get(localdate)).size()))));
         }
 
         calendarView.setEvents(eventDays);
@@ -147,6 +147,7 @@ public class CalendarFragment extends Fragment {
         }
     }
 
+    @NonNull
     private ArrayList<Scene> getItemsForDate(java.util.Calendar date) {
         ArrayList<Scene> scenes = new ArrayList<>();
 
@@ -161,6 +162,7 @@ public class CalendarFragment extends Fragment {
         return scenes;
     }
 
+    @NonNull
     private static Drawable getCircleDrawableWithText(Context context, String string) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.event_dot);
         Drawable text = CalendarUtils.getDrawableText(context, string, null, android.R.color.white, 12);

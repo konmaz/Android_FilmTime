@@ -13,7 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Scene;
@@ -35,9 +35,9 @@ public class RecyclerAdapterGeneric extends RecyclerView.Adapter<RecyclerAdapter
         this.scenes = scenes;
     }
 
-    public RecyclerAdapterGeneric(HashSet<CrewMember> crewMemberArrayList) {
+    public RecyclerAdapterGeneric(LinkedHashSet<CrewMember> crewMemberLinkedHashSet) {
         this.scenes = null;
-        this.crewMemberArrayList = new ArrayList<>(crewMemberArrayList);
+        this.crewMemberArrayList = new ArrayList<>(crewMemberLinkedHashSet);
     }
 
     public void disableButton() {

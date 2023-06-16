@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -295,13 +296,13 @@ public class Database extends SQLiteOpenHelper {
     }
 
     /**
-     * @return A array list containing all the Crew Members that are saved in the database
+     * @return A linked hash set containing all the Crew Members that are saved in the database
      */
-    public HashSet<CrewMember> getCrewMembers() {
-        HashSet<CrewMember> crew_members = new HashSet<>();
+    public LinkedHashSet<CrewMember> getCrewMembers() {
+        LinkedHashSet<CrewMember> crew_members = new LinkedHashSet<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CREW_MEMBERS, null, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_CREW_MEMBERS, null, null, null, null, null, "name ASC");
 
         if (cursor.moveToFirst()) {
             do {

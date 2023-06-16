@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import gr.auth.csd.filmtime.helpers.CrewMember;
 import gr.auth.csd.filmtime.helpers.Database;
@@ -57,7 +57,7 @@ public class EditorSceneFragment extends Fragment {
 
         Scene scene_obj = null;
         Database dbHandler = new Database(getContext());
-        HashSet<CrewMember> allCrewMembers = dbHandler.getCrewMembers();
+        LinkedHashSet<CrewMember> allCrewMembers = dbHandler.getCrewMembers();
         Log.d(TAG, "parameter_scene_id : " + parameter_scene_id);
         if (parameter_scene_id != -1) {
             Log.d(TAG, "Edit");
@@ -89,25 +89,18 @@ public class EditorSceneFragment extends Fragment {
             i = i + 1;
         }
 
-        Scene finalScene_obj = scene_obj;
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSceneToDatabase(view);
+        saveButton.setOnClickListener(v -> {
+            saveSceneToDatabase(view);
 
-                Navigation.findNavController(v).navigate(R.id.action_editorScene_to_ScenesFragment);
-            }
+            Navigation.findNavController(v).navigate(R.id.action_editorScene_to_ScenesFragment);
         });
         Button deleteButton = view.findViewById(R.id.editor_scene_delete);
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (parameter_scene_id != -1)
-                    dbHandler.deleteScene(parameter_scene_id);
-                Navigation.findNavController(v).navigate(R.id.action_editorScene_to_ScenesFragment);
+        deleteButton.setOnClickListener(v -> {
+            if (parameter_scene_id != -1)
+                dbHandler.deleteScene(parameter_scene_id);
+            Navigation.findNavController(v).navigate(R.id.action_editorScene_to_ScenesFragment);
 
-            }
         });
 
 
