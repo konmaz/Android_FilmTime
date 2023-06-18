@@ -1,9 +1,6 @@
 package gr.auth.csd.filmtime;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +43,9 @@ public class EditorSceneFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("myCustom", "onCreateView: called");
-        // Inflate the layout for this fragment
-        Log.d("myCustom", "onViewCreated: called also " + parameter_scene_id);
+//        Log.d("myCustom", "onCreateView: called");
+//        // Inflate the layout for this fragment
+//        Log.d("myCustom", "onViewCreated: called also " + parameter_scene_id);
         return inflater.inflate(R.layout.fragment_editor_scene, container, false);
     }
 
@@ -58,9 +55,9 @@ public class EditorSceneFragment extends Fragment {
         Scene scene_obj = null;
         Database dbHandler = new Database(getContext());
         LinkedHashSet<CrewMember> allCrewMembers = dbHandler.getCrewMembers();
-        Log.d(TAG, "parameter_scene_id : " + parameter_scene_id);
+        //Log.d(TAG, "parameter_scene_id : " + parameter_scene_id);
         if (parameter_scene_id != -1) {
-            Log.d(TAG, "Edit");
+            //Log.d(TAG, "Edit");
             scene_obj = dbHandler.getScene(parameter_scene_id);
             TextView sceneNameTextView = view.findViewById(R.id.editTextSceneName);
             sceneNameTextView.setText(scene_obj.getName());
@@ -71,7 +68,7 @@ public class EditorSceneFragment extends Fragment {
         LinearLayout containerLayout = view.findViewById(R.id.fragment_editor_scene_crew_linear_layout);
         for (CrewMember member : allCrewMembers) {
             CheckBox checkBox = new CheckBox(view.getContext());
-            checkBox.setId(i);
+            checkBox.setId(i); // setting an ID allows for Android to save state automatically
             if (parameter_scene_id != -1 && scene_obj != null) {
                 if (scene_obj.getCrewMembers().contains(member)) {
                     checkBox.setChecked(true);

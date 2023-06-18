@@ -45,6 +45,7 @@ public class AssetsFragment extends Fragment {
         RecyclerView.Adapter<RecyclerAdapterGeneric.ViewHolder> adapter = new RecyclerAdapterGeneric(dbHandler.getCrewMembers());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
         addButton.setOnClickListener(v -> { // add event handling for button 'Add New Scene'
             Bundle args = new Bundle();
             args.putString("title", "Add"); // this changed the top bar title

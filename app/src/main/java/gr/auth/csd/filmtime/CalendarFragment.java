@@ -127,7 +127,9 @@ public class CalendarFragment extends Fragment {
         });
 
     }
-
+    /**
+     * Add event dots to the calendar based on shootable scene dates.
+     */
     private void addEventDots() {
         for (LocalDate localdate : possibleShootingDates.keySet()) {
             java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -137,7 +139,11 @@ public class CalendarFragment extends Fragment {
 
         calendarView.setEvents(eventDays);
     }
-
+    /**
+     * Display the list of scenes for a selected date.
+     *
+     * @param scenes The list of scenes to be displayed.
+     */
     private void displayItemList(ArrayList<Scene> scenes) {
         binding.calendarNoScenesMessage.setVisibility(View.INVISIBLE);
         itemRecyclerAdapter.setScenes(scenes);
@@ -146,7 +152,12 @@ public class CalendarFragment extends Fragment {
             binding.calendarNoScenesMessage.setVisibility(View.VISIBLE);
         }
     }
-
+    /**
+     * Get the shootable scenes for a selected date.
+     *
+     * @param date The selected date.
+     * @return The list of shootable scenes for the selected date.
+     */
     @NonNull
     private ArrayList<Scene> getItemsForDate(java.util.Calendar date) {
         ArrayList<Scene> scenes = new ArrayList<>();
@@ -161,7 +172,13 @@ public class CalendarFragment extends Fragment {
 
         return scenes;
     }
-
+    /**
+     * Get a circle drawable with text.
+     *
+     * @param context The context.
+     * @param string  The text to be displayed.
+     * @return The circle drawable with text.
+     */
     @NonNull
     private static Drawable getCircleDrawableWithText(Context context, String string) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.event_dot);
